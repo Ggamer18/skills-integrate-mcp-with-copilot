@@ -1,7 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
   const activitiesList = document.getElementById("activities-list");
-  const activitySelect = document.getElementById("activity");
-  const signupForm = document.getElementById("signup-form");
   const messageDiv = document.getElementById("message");
 
   // Function to fetch activities from API
@@ -37,6 +35,18 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>`
             : `<p><em>No participants yet</em></p>`;
 
+        // Add registration form to each card
+        const registerForm = document.createElement("form");
+        registerForm.className = "register-form";
+        registerForm.innerHTML = `
+          <div class="form-group">
+            <label for="email-${name}">Student Email:</label>
+            <input type="email" id="email-${name}" required placeholder="your-email@mergington.edu" />
+          </div>
+          <button type="submit">Register Student</button>
+        `;
+        registerForm.addEventListener("submit", (event) => handleRegister(event, name));
+
         activityCard.innerHTML = `
           <h4>${name}</h4>
           <p>${details.description}</p>
@@ -46,14 +56,9 @@ document.addEventListener("DOMContentLoaded", () => {
             ${participantsHTML}
           </div>
         `;
+        activityCard.appendChild(registerForm);
 
         activitiesList.appendChild(activityCard);
-
-        // Add option to select dropdown
-        const option = document.createElement("option");
-        option.value = name;
-        option.textContent = name;
-        activitySelect.appendChild(option);
       });
 
       // Add event listeners to delete buttons
@@ -110,12 +115,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Handle form submission
-  signupForm.addEventListener("submit", async (event) => {
+  // Handle registration per activity
+  async function handleRegister(event, activity) {
     event.preventDefault();
-
-    const email = document.getElementById("email").value;
-    const activity = document.getElementById("activity").value;
+    const form = event.target;
+    const emailInput = form.querySelector("input[type='email']");
+    const email = emailInput.value;
 
     try {
       const response = await fetch(
@@ -132,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (response.ok) {
         messageDiv.textContent = result.message;
         messageDiv.className = "success";
-        signupForm.reset();
+        form.reset();
 
         // Refresh activities list to show updated participants
         fetchActivities();
@@ -153,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
       messageDiv.classList.remove("hidden");
       console.error("Error signing up:", error);
     }
-  });
+  }
 
   // Initialize app
   fetchActivities();
