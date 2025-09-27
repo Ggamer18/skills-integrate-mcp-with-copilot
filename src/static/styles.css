@@ -28,17 +28,12 @@ header h1 {
   margin-bottom: 10px;
 }
 
+
 main {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
   gap: 30px;
-  justify-content: center;
-}
-
-@media (min-width: 768px) {
-  main {
-    grid-template-columns: 2fr 1fr;
-  }
 }
 
 section {
@@ -47,7 +42,66 @@ section {
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 500px;
+  max-width: 700px;
+  margin-bottom: 0;
+}
+
+#activities-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+  align-items: flex-end;
+  margin-top: 20px;
+}
+
+.activity-card {
+  flex: 1 1 300px;
+  min-width: 260px;
+  max-width: 350px;
+  margin-bottom: 0;
+}
+
+
+@media (max-width: 900px) {
+  section {
+    max-width: 100%;
+    padding: 10px;
+  }
+  #activities-list {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+  .activity-card {
+    max-width: 100%;
+    min-width: 0;
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 5px;
+  }
+  header {
+    padding: 10px 0;
+    font-size: 16px;
+  }
+  section h3 {
+    font-size: 18px;
+    padding-bottom: 6px;
+  }
+  .activity-card h4 {
+    font-size: 16px;
+  }
+  .activity-card p, .participants-section h5 {
+    font-size: 14px;
+  }
+  .register-form input, .register-form button {
+    font-size: 14px;
+    padding: 8px;
+  }
 }
 
 section h3 {
